@@ -24,7 +24,7 @@ void PointEaten(struct Snake* snake, struct Point * point, int width, int height
 		int segments;
 		int equals;
 
-		//AddSegment(&snake);
+		AddSegment(snake, point->X, point->Y);
 		segments = snake->segments;
 		equals = 1;
 		while(equals)
@@ -54,15 +54,14 @@ int main(void) {
 	struct Snake snake;
 	struct Point point;
 
-	timeToWait = 100;
+	timeToWait = INIT_TIMETOWAIT;
 	width = getWidth();
 	height = getHeight();
 	pressedKey = 'w';	
-
-	snake.segments[0].movingDirection = UP;
-	snake.segments[0].X = 10;
-	snake.segments[0].Y = 10;
 	snake.segmentsCount = 0;
+	snake.movingDirection = UP;
+
+	AddSegment(&snake, START_X, START_Y);
 
 	point = GeneratePoint(width, height);
 

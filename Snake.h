@@ -13,7 +13,6 @@ enum Direction {UP, DOWN, RIGHT, LEFT};
 
 struct Segment
 {
-	enum Direction movingDirection;
 	int X;
 	int Y;
 };
@@ -21,11 +20,12 @@ struct Segment
 struct Snake
 {
 	int segmentsCount;
+	enum Direction movingDirection;
 	struct Segment segments[WIDTH*HEIGHT];
 };
 
 void MoveSnake(struct Snake *snake);
 void SetDirection(char pk, struct Snake *snake);
-//void AddSegment(struct Snake* snake, int x, int y);
+void AddSegment(struct Snake* snake, int x, int y);
 
 #endif /* SNAKE_H_ */

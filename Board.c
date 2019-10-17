@@ -24,17 +24,38 @@ void PrintBoard(struct Snake *snake, struct Point *point)
 		printf("#");
 		for (int columns = 0; columns < WIDTH; columns++)
 		{
-			if((snake->segments[0].X == columns) && (snake->segments[0].Y == rows))
+			int i;
+			int seg;
+			int printed;
+
+			printed = 0;
+			seg = snake->segmentsCount;
+			for (i = 0; i < seg; i++)
 			{
-				printf("o");
+				if ((snake->segments[i].X == columns) && (snake->segments[i].Y == rows))
+				{
+					if (i == 0)
+					{
+						printf("O");
+					}
+					else
+					{
+						printf("o");
+					}
+					printed = 1;
+					break;
+				}
 			}
-			else if((point->X == columns) && (point->Y == rows))
+			if (printed == 0)
 			{
-				printf("@");
-			}
-			else 
-			{
-				printf(" ");
+				if ((point->X == columns) && (point->Y == rows))
+				{
+					printf("@");
+				}
+				else
+				{
+					printf(" ");
+				}
 			}
 		}
 		printf("#");
