@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "CONSTS.h"
 
+enum GameResult {Win, Lose, Playing};
 
 void PrintInfo(struct Snake *snake)
 {
@@ -23,8 +24,7 @@ void PointEaten(struct Snake* snake, struct Point * point, int width, int height
 		int i;
 		int segments;
 		int equals;
-
-		AddSegment(snake, point->X, point->Y);
+		AddSegment(snake);
 		segments = snake->segments;
 		equals = 1;
 		while(equals)
@@ -45,30 +45,64 @@ void PointEaten(struct Snake* snake, struct Point * point, int width, int height
 	}
 }
 
+enum GameResult DidGameFinished(struct Snake* snake)
+{
+	int seg;
+	int headx;
+	int heady;
+	enum GameResult result = Playing;
+
+	seg = snake->segmentsCount;
+	headx = snake->segments[0].X;
+	heady = snake->segments[0].Y;
+
+	int i;
+	for (i = 1; i < seg; i++)
+	{
+		if ((headx == snake->segments[i].X) && (heady == snake->segments[i].Y))
+		{
+			result = Lose;
+			break;
+		}
+	}
+	if ((headx > (WIDTH-1)) || (headx < 0))
+	{
+		result = Lose;
+	}
+	if ((heady == (HEIGHT-1)) || (heady < 0))
+	{
+		result = Lose;
+	}
+	return result;
+}
+
 int main(void) {
 	int timeToWait;
 	int width;
 	int height;
+	enum GameResult result;
 	char pressedKey;
 	struct Segment segments;
 	struct Snake snake;
 	struct Point point;
 
 	timeToWait = INIT_TIMETOWAIT;
-	width = getWidth();
-	height = getHeight();
+	width = WIDTH;
+	height = HEIGHT;
 	pressedKey = 'w';	
 	snake.segmentsCount = 0;
 	snake.movingDirection = UP;
+	result = Playing;
 
-	AddSegment(&snake, START_X, START_Y);
+	Initialize(&snake);
 
 	point = GeneratePoint(width, height);
 
-	while(TRUE)
+	while (result == Playing)
 	{
-		PointEaten(&snake, &point, width, height);
+		system("cls");
 		PrintBoard(&snake, &point);
+		PointEaten(&snake, &point, width, height);
 		PrintInfo(&snake);
 
 		int countdown;
@@ -86,7 +120,16 @@ int main(void) {
 		}
 		MoveSnake(&snake);
 		Sleep(timeToWait-countdown);
-		system("cls");
+		result = DidGameFinished(&snake);
+	}
+
+	if (result == Win)
+	{
+		printf("YOU WON!\n");
+	}
+	else
+	{
+		printf("YOU LOSE!\n");
 	}
 
 	return EXIT_SUCCESS;

@@ -68,13 +68,3 @@ void PrintBoard(struct Snake *snake, struct Point *point)
 	}
 	printf("\n");
 }
-
-int getWidth()
-{
-	return WIDTH;
-}
-
-int getHeight()
-{
-	return HEIGHT;
-}

@@ -1,9 +1,4 @@
-﻿  Board.c
-  Snake.c
-C:\Users\Hubert\Source\Repos\Snake\Snake.c(51,6): warning C4101: "seg": lokalna zmienna, do której nie istnieje odwołanie
-  main.c
-C:\Users\Hubert\Source\Repos\Snake\Snake.c(50,6): warning C4101: "i": lokalna zmienna, do której nie istnieje odwołanie
+﻿  main.c
 C:\Users\Hubert\Source\Repos\Snake\main.c(28,29): warning C4047: "=": "int" różni się w poziomach operatorów pośrednich od "Segment *"
-  Generowanie kodu...
-C:\Users\Hubert\Source\Repos\Snake\main.c(53,17): warning C4101: "segments": lokalna zmienna, do której nie istnieje odwołanie
+C:\Users\Hubert\Source\Repos\Snake\main.c(85,17): warning C4101: "segments": lokalna zmienna, do której nie istnieje odwołanie
   Snake.vcxproj -> C:\Users\Hubert\Source\Repos\Snake\Debug\Snake.exe

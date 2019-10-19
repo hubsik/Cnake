@@ -26,6 +26,8 @@ struct Snake
 
 void MoveSnake(struct Snake *snake);
 void SetDirection(char pk, struct Snake *snake);
-void AddSegment(struct Snake* snake, int x, int y);
+void Initialize(struct Snake* snake);
+void AddSegment(struct Snake* snake);
+
 
 #endif /* SNAKE_H_ */

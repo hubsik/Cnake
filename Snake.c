@@ -47,9 +47,6 @@ void MoveSnake(struct Snake *snake)
 //Function to set move direction
 void SetDirection(char pk, struct Snake *snake)
 {
-	int i;
-	int seg;
-
 	if (pk == 'w')
 	{
 		snake->movingDirection = UP;
@@ -68,13 +65,21 @@ void SetDirection(char pk, struct Snake *snake)
 	}
 }
 
-void AddSegment(struct Snake *snake, int x, int y)
+void AddSegment(struct Snake *snake)
 {
 	int seg;
 
 	snake->segmentsCount = (snake->segmentsCount) + 1;
+
 	seg = snake->segmentsCount;
-		
-	snake->segments[seg - 1].X = x;
-	snake->segments[seg - 1].Y = y;
+	snake->segments[seg - 1].X = WIDTH + 1;
+	snake->segments[seg - 1].Y = HEIGHT + 1;
+}
+
+void Initialize(struct Snake* snake)
+{
+	snake->segmentsCount = 1;
+	snake->segments[0].X = START_X;
+	snake->segments[0].Y = START_Y;
+	snake->movingDirection = UP;
 }
