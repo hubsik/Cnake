@@ -1,4 +1,3 @@
-//#define _CRT_SECURE_NO_WARNINGS //it is usefull when usinf 'scanf'
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,42 +5,30 @@
 #include <conio.h>
 #include "Board.h"
 #include "Snake.h"
-#include "Point.h"
 #include "CONSTS.h"
 
 enum GameResult {Win, Lose, Playing};
+enum Solution {Release, Debug};
 
-void PrintInfo(struct Snake *snake)
+void PrintInfo(struct Snake *snake, int * timeToWait)
 {
 	printf("\nsnake.X: %d", snake->segments[0].X);
 	printf("\nsnake.Y: %d\n", snake->segments[0].Y);
+	printf("\ntimeToWait: %d\n", *timeToWait);
 }
 
-void PointEaten(struct Snake* snake, struct Point * point, int width, int height)
+int PointEaten(struct Snake* snake, struct Point *point)
 {
 	if ((snake->segments[0].X == point->X) && (snake->segments[0].Y == point->Y))
 	{
-		int i;
-		int segments;
-		int equals;
 		AddSegment(snake);
-		segments = snake->segments;
-		equals = 1;
-		while(equals)
-		{
-			*point = GeneratePoint(width, height);
-			equals = 0;
 
-			//Check if generated point is not on the same position as snake
-			//if is then Call GeneratePoint again
-			for (i = 0; i < segments; i++)
-			{
-				if ((snake->segments[0].X == point->X) && (snake->segments[0].Y == point->Y))
-				{
-					equals = 1;
-				}
-			}
-		}
+		*point = GeneratePoint(snake);
+		return 1;
+	}
+	else
+	{
+		return 0;
 	}
 }
 
@@ -57,6 +44,7 @@ enum GameResult DidGameFinished(struct Snake* snake)
 	heady = snake->segments[0].Y;
 
 	int i;
+	
 	for (i = 1; i < seg; i++)
 	{
 		if ((headx == snake->segments[i].X) && (heady == snake->segments[i].Y))
@@ -69,11 +57,23 @@ enum GameResult DidGameFinished(struct Snake* snake)
 	{
 		result = Lose;
 	}
-	if ((heady == (HEIGHT-1)) || (heady < 0))
+	if ((heady > (HEIGHT-1)) || (heady < 0))
 	{
 		result = Lose;
 	}
+	if (snake->segmentsCount == WIDTH * HEIGHT)
+	{
+		result = Win;
+	}
 	return result;
+}
+
+void ChangeTimeToWait(int * timeToWait)
+{
+	if (*timeToWait > MIN_TIMETOWAIT)
+	{
+		*timeToWait = *timeToWait - (int)(CHANGE_RATE * INIT_TIMETOWAIT);
+	}
 }
 
 int main(void) {
@@ -81,8 +81,8 @@ int main(void) {
 	int width;
 	int height;
 	enum GameResult result;
+	enum Solution solution;
 	char pressedKey;
-	struct Segment segments;
 	struct Snake snake;
 	struct Point point;
 
@@ -93,17 +93,27 @@ int main(void) {
 	snake.segmentsCount = 0;
 	snake.movingDirection = UP;
 	result = Playing;
+	solution = Release;
 
 	Initialize(&snake);
 
-	point = GeneratePoint(width, height);
+	point = GeneratePoint(&snake);
 
 	while (result == Playing)
 	{
 		system("cls");
+		if (PointEaten(&snake, &point))
+		{
+			ChangeTimeToWait(&timeToWait);
+		}
 		PrintBoard(&snake, &point);
-		PointEaten(&snake, &point, width, height);
-		PrintInfo(&snake);
+
+		/* Only for debug */
+		if (solution == Debug)
+		{
+			PrintInfo(&snake, &timeToWait);
+		}
+		
 
 		int countdown;
 		int isPressed;

@@ -8,7 +8,7 @@
 #include "Snake.h"
 
 
-//Function to change position of snake segments
+/* Function to change position of snake segments */
 void MoveSnake(struct Snake *snake)
 {
 	int i;
@@ -44,7 +44,7 @@ void MoveSnake(struct Snake *snake)
 	
 }
 
-//Function to set move direction
+/* Function to set move direction */
 void SetDirection(char pk, struct Snake *snake)
 {
 	if (pk == 'w')
